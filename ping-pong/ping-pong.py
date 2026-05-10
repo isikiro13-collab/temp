@@ -46,8 +46,15 @@ pL_lose = font.render('ИГРОК СЛЕВА ПРОИГРАЛ!', True, (200, 0, 
 pR_lose = font.render('ИГРОК СПРАВА ПРОИГРАЛ!', True, (200, 0, 0))
 
 '''Игровые объекты'''
-player_L = Player('left_rocket.png', 50, 344, 5, 15, 80)
-player_R = Player('right_rocket.png', win_width - 50, win_height / 2 - 40, 5, 15, 80)
+player_L = Player('сахуралдо.jpg', 50, 344, 5, 15, 80)
+player_R = Player('goofy ahh messi.jpg', win_width - 50, win_height / 2 - 40, 5, 15, 80)
+ball = GameSprite('Birb.jpg', win_width / 2 - 15, win_height / 2 - 15, 5, 26, 26)
+
+speed_x = 6
+speed_y = 6
+
+
+
 
 '''Игровой цикл'''
 while game:
@@ -59,9 +66,30 @@ while game:
         window.fill(win_background)
         player_L.update_l()
         player_R.update_r()
+        '''Перемещение мяча'''
+        ball.rect.x += speed_x
+        ball.rect.y += speed_y
+
+        '''Отскоки мяча от стен сверху и снизу'''
+        if ball.rect.y <= 0 or ball.rect.y >= win_height - 30:
+            speed_y *= -1
+
+        '''Отскоки мяча от ракеток'''
+        if sprite.collide_rect(player_L, ball) or sprite.collide_rect(player_R, ball):
+            speed_x *= -1
+            
+        '''Проверка, что мяч ушел за край экрана (кто-то из игроков проиграл)'''
+        if ball.rect.x <= 0:
+            finish = True
+            window.blit(pL_lose, (550, 350))
+            
+        if ball.rect.x >= win_width - 30:
+            finish = True
+            window.blit(pR_lose, (550, 350))
 
         player_L.reset()
         player_R.reset()
+        ball.reset()
 
     display.update()
     clock.tick(FPS)
