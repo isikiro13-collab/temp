@@ -59,6 +59,7 @@ score_left = 0
 score_right = 0
 score_font = font.__class__(None, 48)
 
+
 speed_increased = False
 
 # Переменные для картинки победителя
@@ -157,7 +158,7 @@ while game:
             victory_sound_left.play()  # Воспроизводим звук победы для левого игрока (СИИИИ РОНАЛДО)
 
         window.blit(background, (0, 0))
-
+ # обновление позиции игроков
         player_L.reset()
         player_R.reset()
         ball.reset()
